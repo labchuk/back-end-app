@@ -2,13 +2,14 @@ const UserModel = require('../models/user-model')
 const bcrypt = require('bcrypt')
 const tokenService = require('./token-service')
 const UserDto = require('../dtos/user-dto')
+const ApiError = require('../exceptions/api-error')
 
 
 class UserService {
     async registration (email, password) {
         const candidate = await UserModel.findOne({email})
         if (candidate) {
-            throw new Error('Пользователь уже есть')
+            throw ApiError.BadRequest('Пользователь уже есть')
         }
         const hashPassword = await bcrypt.hash(password,3)
 
@@ -26,12 +27,12 @@ class UserService {
     async login (email,password) {
         const user = await UserModel.findOne({email})
         if (!user) {
-            throw new Error('Пользователя нет')
+            throw ApiError.BadRequest('Пользователя нет')
         }
         const isPassEquals = await bcrypt.compare(password, user.password)
 
         if (!isPassEquals) {
-            throw new Error('Некоректный пароль')
+            throw ApiError.BadRequest('Некоректный пароль')
          }
         const userDto = new UserDto(user)
         const tokens = tokenService.generateTokens({...userDto})
@@ -50,19 +51,22 @@ class UserService {
 
     async refresh(refreshToken) {
         if (!refreshToken) {
-            throw new Error('Пользователь не авторизован')
+            throw ApiError.UnauthorizedError('Пользователь не авторизован')
         }
         const userData = tokenService.validateRefreshToken(refreshToken)
+        console.log('sad')
         const isToken = await tokenService.findToken(refreshToken)
         if (!userData || !isToken) {
-            throw new Error("Пользователь не найден")
+            throw ApiError.UnauthorizedError("Пользователь не найден")
         }
 
         const user = await UserModel.findById(userData.id)
+
         const userDto = new UserDto(user)
         const tokens = tokenService.generateTokens({...userDto})
 
-        await tokenService.saveToken(userDto, tokens.refreshToken)
+        await tokenService.saveToken(userDto.id, tokens.refreshToken)
+
         return {...tokens, user: userDto}
 
 
