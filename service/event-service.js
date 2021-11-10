@@ -4,11 +4,12 @@ const EventModel = require('../models/event-model')
 class EventService {
     async getAllEvents() {
         const events = await EventModel.find()
+
         return events
     }
 
-    async createNewEvent(name,description,dateStart,dateEnd,registrationDateStart,registrationDateEnd, address) {
-        const event = await EventModel.create({name,description,dateStart,dateEnd,registrationDateStart,registrationDateEnd,address})
+    async createNewEvent(name,description,date, dateReg, address) {
+        const event = await EventModel.create({name,description, date, dateReg, address})
         return {
             event
         }
@@ -18,15 +19,13 @@ class EventService {
         return event
     }
 
-    async updateEvent(eventData,id) {
+    async updateEvent(name,description, date, dateReg, address,id) {
         const event = await EventModel.findById({_id:id})
-        event.name = eventData.name
-        event.description = eventData.description
-        event.dateStart = eventData.dateStart
-        event.dateEnd = eventData.dateEnd
-        event.registrationDateStart = eventData.registrationDateStart
-        event.registrationDateEnd = eventData.registrationDateEnd
-        event.address = eventData.address
+        event.name = name
+        event.description = description
+        event.date = date
+        event.dateReg = dateReg
+        event.address = address
         return event.save()
 
     }
