@@ -4,8 +4,11 @@ const EventModel = require('../models/event-model')
 class EventService {
     async getAllEvents() {
         const events = await EventModel.find()
-
         return events
+    }
+    async getEvent(id) {
+        const event = await EventModel.findById({_id:id})
+        return event
     }
 
     async createNewEvent(name,description,date, dateReg, address) {

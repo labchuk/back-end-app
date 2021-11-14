@@ -10,6 +10,15 @@ class eventController {
             next(e)
         }
     }
+    async getEventById(req,res,next) {
+        try {
+            const {id} = req.params
+            const event = await eventService.getEvent(id)
+            return res.json(event)
+        } catch (e) {
+            next(e)
+        }
+    }
 
     async createEvent(req,res,next) {
         try {
