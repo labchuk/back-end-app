@@ -1,8 +1,10 @@
 const RegistrationModel = require('../models/registration-model')
+const mailService = require('./mail-service')
 
 class registrationService {
     async regOnEvent(name,surname,email,userId,eventId) {
         const onEvent = await RegistrationModel.create({name,surname,email,userEventId: userId+eventId})
+        await mailService.sendToMail(email)
         return {
             onEvent
         }

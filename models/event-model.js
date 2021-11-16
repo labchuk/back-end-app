@@ -5,7 +5,9 @@ const EventSchema = new Schema({
     description: {type: String },
     date: {type: Array },
     dateReg: {type: Array },
-    address: {type: String}
+    address: {type: String},
+    lat: {type: Number},
+    lng: {type: Number}
 })
 
 module.exports = model('Event', EventSchema)

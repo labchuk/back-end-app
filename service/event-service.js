@@ -11,8 +11,9 @@ class EventService {
         return event
     }
 
-    async createNewEvent(name,description,date, dateReg, address) {
-        const event = await EventModel.create({name,description, date, dateReg, address})
+    async createNewEvent(name,description,date, dateReg, address,lat,lng) {
+
+        const event = await EventModel.create({name,description, date, dateReg, address,lat,lng})
         return {
             event
         }

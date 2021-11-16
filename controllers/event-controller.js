@@ -22,8 +22,8 @@ class eventController {
 
     async createEvent(req,res,next) {
         try {
-            const {name,description, date, dateReg, address} = req.body
-            const event = await eventService.createNewEvent(name,description, date, dateReg, address)
+            const {name,description, date, dateReg, address,lat,lng} = req.body
+            const event = await eventService.createNewEvent(name,description, date, dateReg, address,lat,lng)
             return res.json(event)
         } catch (e) {
             next(e)
