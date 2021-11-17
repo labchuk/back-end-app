@@ -13,8 +13,7 @@ class MailService {
             }
         })
     }
-    async sendToMail(email) {
-        console.log(email)
+    async sendToUser(email) {
         await this.transporter.sendMail({
             from: "alextestprojectexadel@gmail.com",
             to: email,
@@ -23,6 +22,19 @@ class MailService {
             html: `
                 <div>
                     <h3>You have successfully registered for the event!</h3>               
+                </div> 
+            `
+        })
+    }
+    async sendToAdmin(email,emailUser,eventId) {
+        await this.transporter.sendMail({
+            from: "alextestprojectexadel@gmail.com",
+            to: email,
+            subject: "Event registration",
+            text: '',
+            html: `
+                <div>
+                    <h3>User with this ${emailUser} email was registered this ${eventId} event</h3>               
                 </div> 
             `
         })

@@ -22,8 +22,8 @@ class eventController {
 
     async createEvent(req,res,next) {
         try {
-            const {name,description, date, dateReg, address,lat,lng} = req.body
-            const event = await eventService.createNewEvent(name,description, date, dateReg, address,lat,lng)
+            const {adminEmail,name,description, date, dateReg, address,lat,lng} = req.body
+            const event = await eventService.createNewEvent(adminEmail,name,description, date, dateReg, address,lat,lng)
             return res.json(event)
         } catch (e) {
             next(e)
@@ -33,7 +33,6 @@ class eventController {
     async deleteEvent(req,res,next) {
         try {
             const {id} = req.body
-            console.log(id)
             const event = await eventService.deleteEvent(id)
             return res.json(event)
         } catch (e) {
@@ -43,10 +42,8 @@ class eventController {
 
     async updateEvent(req,res,next) {
         try {
-            const {name,description, date, dateReg, address,id} = req.body
-            console.log(name)
-            console.log(description)
-            const event = await eventService.updateEvent(name,description, date, dateReg, address,id)
+            const {adminEmail,name,description, date, dateReg, address,id,lat,lng} = req.body
+            const event = await eventService.updateEvent(adminEmail,name,description, date, dateReg, address,id,lat,lng)
             return res.json(event)
         } catch (e) {
             next(e)

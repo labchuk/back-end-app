@@ -11,9 +11,8 @@ class EventService {
         return event
     }
 
-    async createNewEvent(name,description,date, dateReg, address,lat,lng) {
-
-        const event = await EventModel.create({name,description, date, dateReg, address,lat,lng})
+    async createNewEvent(adminEmail,name,description,date, dateReg, address,lat,lng) {
+        const event = await EventModel.create({adminEmail,name,description, date, dateReg, address,lat,lng})
         return {
             event
         }
@@ -23,13 +22,16 @@ class EventService {
         return event
     }
 
-    async updateEvent(name,description, date, dateReg, address,id) {
+    async updateEvent(adminEmail,name,description, date, dateReg, address,id,lat,lng) {
         const event = await EventModel.findById({_id:id})
+        event.adminEmail = adminEmail
         event.name = name
         event.description = description
         event.date = date
         event.dateReg = dateReg
         event.address = address
+        event.lat = lat
+        event.lng = lng
         return event.save()
 
     }

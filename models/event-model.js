@@ -1,6 +1,7 @@
 const {Schema,model} = require('mongoose')
 
 const EventSchema = new Schema({
+    adminEmail: {type: String, required: true},
     name: {type: String ,required: true},
     description: {type: String },
     date: {type: Array },
