@@ -1,4 +1,6 @@
 const eventService = require('../service/event-service')
+const {validationResult} = require('express-validator')
+const ApiError = require('../exceptions/api-error')
 
 
 class eventController {
@@ -22,6 +24,10 @@ class eventController {
 
     async createEvent(req,res,next) {
         try {
+            const errors = validationResult(req)
+            if(!errors.isEmpty()){
+                return next(ApiError.BadRequest('invalid data for event creation', errors.array()))
+            }
             const {adminEmail,name,description, date, dateReg, address,lat,lng} = req.body
             const event = await eventService.createNewEvent(adminEmail,name,description, date, dateReg, address,lat,lng)
             return res.json(event)
@@ -42,6 +48,10 @@ class eventController {
 
     async updateEvent(req,res,next) {
         try {
+            const errors = validationResult(req)
+            if(!errors.isEmpty()){
+                return next(ApiError.BadRequest('invalid data for event updating', errors.array()))
+            }
             const {adminEmail,name,description, date, dateReg, address,id,lat,lng} = req.body
             const event = await eventService.updateEvent(adminEmail,name,description, date, dateReg, address,id,lat,lng)
             return res.json(event)
