@@ -6,7 +6,8 @@ const ApiError = require('../exceptions/api-error')
 class eventController {
     async getEvents(req,res,next) {
         try {
-            const events = await eventService.getAllEvents()
+            const {start, end} = req.query
+            const events = await eventService.getAllEvents(start,end)
             return res.json(events)
         } catch (e) {
             next(e)
@@ -28,8 +29,8 @@ class eventController {
             if(!errors.isEmpty()){
                 return next(ApiError.BadRequest('invalid data for event creation', errors.array()))
             }
-            const {adminEmail,name,description, date, dateReg, address,lat,lng} = req.body
-            const event = await eventService.createNewEvent(adminEmail,name,description, date, dateReg, address,lat,lng)
+            const {adminEmail,name,description,dateStart,dateEnd,dateRegStart,dateRegEnd, address,lat,lng} = req.body
+            const event = await eventService.createNewEvent(adminEmail,name,description,dateStart,dateEnd,dateRegStart,dateRegEnd, address,lat,lng)
             return res.json(event)
         } catch (e) {
             next(e)

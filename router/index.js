@@ -14,6 +14,7 @@ router.post('/registration',
 router.post('/logout', userController.logout)
 router.get('/refresh', userController.refresh)
 router.get('/events', eventController.getEvents)
+router.get('/events?start=', eventController.getEvents)
 router.get('/events/:id', eventController.getEventById)
 router.post('/create-event',
     body('name').isLength({max:25}),
